@@ -4,6 +4,11 @@ Limit Phone Number Country
 This is a plugin for `pretix`_. 
 
 Limit the available phone number country code in pretix phone number questions. Caution! Applies to the whole server!
+This plugin does not even have to be activated. As soon as you install it, it overrides the phone number prefixes
+available server-wide.
+
+It applies to both phone number questions and the pretix built-in phone number field.
+Currently hard-coded to US phone numbers.
 
 Development setup
 -----------------
