@@ -8,7 +8,7 @@ try:
 except ImportError:
     raise RuntimeError("Please use pretix 2.7 or above to run this plugin!")
 
-__version__ = "0.9.1"
+__version__ = "1.0.0"
 
 
 def patch_phone_numbers(module, countries):
