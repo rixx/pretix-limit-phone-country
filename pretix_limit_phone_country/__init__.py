@@ -8,6 +8,10 @@ except ImportError:
 __version__ = '1.0.0'
 
 
+def patch_phone_number(module):
+    module._COUNTRY_CODE_TO_REGION_CODE = {1: ("US",)}
+
+
 class PluginApp(PluginConfig):
     name = "pretix_limit_phone_country"
     verbose_name = "Limit Phone Number Country"
@@ -25,6 +29,12 @@ class PluginApp(PluginConfig):
 
     def ready(self):
         from . import signals  # NOQA
+        import pretix.base.forms.questions as questions_form
+
+        patch_phone_numbers(questions_form)
+        import pretix.base.forms.checkout as base_form
+
+        patch_phone_numbers(base_form)
 
 
 default_app_config = "pretix_limit_phone_country.PluginApp"
