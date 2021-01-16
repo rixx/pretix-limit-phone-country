@@ -33,7 +33,7 @@ class PluginApp(PluginConfig):
         from . import signals  # NOQA
 
         patch_phone_numbers(questions_form)
-        import pretix.base.forms.checkout as base_form
+        import pretix.presale.forms.checkout as base_form
 
         patch_phone_numbers(base_form)
 
