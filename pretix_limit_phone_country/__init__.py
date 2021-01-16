@@ -8,7 +8,7 @@ except ImportError:
 __version__ = '1.0.0'
 
 
-def patch_phone_number(module):
+def patch_phone_numbers(module):
     module._COUNTRY_CODE_TO_REGION_CODE = {1: ("US",)}
 
 
@@ -28,8 +28,9 @@ class PluginApp(PluginConfig):
         compatibility = "pretix>=2.7.0"
 
     def ready(self):
-        from . import signals  # NOQA
         import pretix.base.forms.questions as questions_form
+
+        from . import signals  # NOQA
 
         patch_phone_numbers(questions_form)
         import pretix.base.forms.checkout as base_form
