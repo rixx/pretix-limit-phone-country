@@ -1,3 +1,6 @@
+import copy
+from collections import defaultdict
+from django.conf import settings
 from django.utils.translation import gettext_lazy
 
 try:
@@ -8,8 +11,8 @@ except ImportError:
 __version__ = "0.9.1"
 
 
-def patch_phone_numbers(module):
-    module._COUNTRY_CODE_TO_REGION_CODE = {1: ("US",)}
+def patch_phone_numbers(module, countries):
+    module._COUNTRY_CODE_TO_REGION_CODE = copy.deepcopy(countries)
 
 
 class PluginApp(PluginConfig):
@@ -29,13 +32,19 @@ class PluginApp(PluginConfig):
 
     def ready(self):
         import pretix.base.forms.questions as questions_form
-
-        from . import signals  # NOQA
-
-        patch_phone_numbers(questions_form)
         import pretix.presale.forms.checkout as base_form
 
-        patch_phone_numbers(base_form)
+        countries = defaultdict(list)
+        if settings.CONFIG_FILE.has_section("plugin:limit_phone_country"):
+            for country, code in settings.CONFIG_FILE.cp[
+                "plugin:limit_phone_country"
+            ].items():
+                countries[int(code)].append(country.upper())
+
+        if not len(countries):
+            countries = {1: ("US",)}
+        patch_phone_numbers(questions_form, countries)
+        patch_phone_numbers(base_form, countries)
 
 
 default_app_config = "pretix_limit_phone_country.PluginApp"

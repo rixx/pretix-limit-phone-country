@@ -8,7 +8,14 @@ This plugin does not even have to be activated. As soon as you install it, it ov
 available server-wide.
 
 It applies to both phone number questions and the pretix built-in phone number field.
-Currently hard-coded to US phone numbers.
+
+By default, this plugin restricts phone numbers to "+1 (USA)". If you want to
+place a different restriction, you can do so via the pretix configuration file.
+Add a section like this (and use the standard country codes)::
+
+   [plugin:limit_phone_country]
+   US = 1
+   DE = 49
 
 Development setup
 -----------------
