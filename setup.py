@@ -1,4 +1,5 @@
 import os
+from contextlib import suppress
 from distutils.command.build import build
 
 from django.core import management
@@ -18,7 +19,8 @@ except Exception:
 
 class CustomBuild(build):
     def run(self):
-        management.call_command("compilemessages", verbosity=1)
+        with suppress(Exception):
+            management.call_command("compilemessages", verbosity=1)
         build.run(self)
 
 
